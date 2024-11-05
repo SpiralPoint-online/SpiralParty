@@ -1,0 +1,4 @@
+max-party-size: 3 # maximum amount of players in a single party (valid values are: 2-9)
+party-chat-prefix: @ # prefix character for chat messages (ignored if SpiralChat is present)
+shared-experience: party # how to share experience (valid values are: [disabled, split, equal, party])
+shared-inventory: party # how to share inventory (valid values are: [disabled, split, equal, party])
