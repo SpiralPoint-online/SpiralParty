@@ -28,4 +28,3 @@
     - the players inventories are temporarily stored in another part of memory and replaced by a common inventory shared by all party members.
   - **disabled**
     - this isn't a mode but using this keyword in the config.yml file, completely disables the shared inventory features.
-~~~~
