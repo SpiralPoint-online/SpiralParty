@@ -8,24 +8,24 @@ Parties can only be so big, this is configurable in the config.yml file. By defa
 
 ## Features
 
-- ### Shared Experience
-This feature has 3 modes of operation as well as ability to be turned off. These modes are:
-- **split**
-  - for any party member that collects experience, the total experience is divided equally and given to all players. e.g. if there are 3 members and member A collects 30 experience, each member receives 10 experience.
-- **equal**
-  - for any party member that collects experience, the total experience is duplicated for every party member. e.g. if there are 3 members and member A collects 30 experience, each member receives 30 experience.
-- **party**
-  - the players experience bars are temporarily stored in another part of memory, and all members share a common experience bar.
-- **disabled**
-  - this isn't a mode but using this keyword in the config.yml file, completely disables the shared experience features.
+### Shared Experience
+- This feature has 3 modes of operation as well as ability to be turned off. These modes are:
+  - **split**
+    - for any party member that collects experience, the total experience is divided equally and given to all players. e.g. if there are 3 members and member A collects 30 experience, each member receives 10 experience.
+  - **equal**
+    - for any party member that collects experience, the total experience is duplicated for every party member. e.g. if there are 3 members and member A collects 30 experience, each member receives 30 experience.
+  - **party**
+    - the players experience bars are temporarily stored in another part of memory, and all members share a common experience bar.
+  - **disabled**
+    - this isn't a mode but using this keyword in the config.yml file, completely disables the shared experience features.
 
-- ### Shared Inventory
-This feature has 3 modes of operation as well as ability to be turned off. These modes are:
-- **split**
-  - for any party member that collects an ItemStack, the ItemStack's amount is split between each party member. e.g. if there are 3 members and member A collects 3 coal, each member gets 1 coal
-- **equal**
-  - for any party member that collects and ItemStack, the ItemStack is duplicated and given to each party member. (this mode is not recommended as it duplicates items)
-- **party**
-  - the players inventories are temporarily stored in another part of memory and replaced by a common inventory shared by all party members.
-- **disabled**
-  - this isn't a mode but using this keyword in the config.yml file, completely disables the shared inventory features.
+### Shared Inventory
+- This feature has 3 modes of operation as well as ability to be turned off. These modes are:
+  - **split**
+    - for any party member that collects an ItemStack, the ItemStack's amount is split between each party member. e.g. if there are 3 members and member A collects 3 coal, each member gets 1 coal
+  - **equal**
+    - for any party member that collects and ItemStack, the ItemStack is duplicated and given to each party member. (this mode is not recommended as it duplicates items)
+  - **party**
+    - the players inventories are temporarily stored in another part of memory and replaced by a common inventory shared by all party members.
+  - **disabled**
+    - this isn't a mode but using this keyword in the config.yml file, completely disables the shared inventory features.
