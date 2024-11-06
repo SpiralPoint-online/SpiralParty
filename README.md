@@ -29,9 +29,15 @@ This feature has 3 modes of operation as well as ability to be turned off. These
 - **disabled**
   > this isn't a mode but using this keyword in the config.yml file, completely disables the shared inventory features.
 
+### Party Chat
+***Under Construction***
+
 ## Commands
 ***Under Construction!***
 
 ## Permissions
+***Under Construction!***
+
+## Configuration
 ***Under Construction!***
 
