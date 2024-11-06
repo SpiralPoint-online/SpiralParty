@@ -6,7 +6,7 @@
 
     <groupId>online.spiralpoint.spigot</groupId>
     <artifactId>spiralparty</artifactId>
-    <version>0.1-INDEV</version>
+    <version>0.1.1</version>
     <packaging>jar</packaging>
 
     <name>SpiralParty</name>

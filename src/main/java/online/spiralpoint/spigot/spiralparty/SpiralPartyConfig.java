@@ -20,6 +20,7 @@ public final class SpiralPartyConfig {
     private final char chatPrefix;
     private final String sharedExperience;
     private final String sharedInventory;
+    private final long inviteExpireTime;
 
     private SpiralPartyConfig() {
         FileConfiguration config = SpiralPartyPlugin.getInstance().getConfig();
@@ -27,6 +28,7 @@ public final class SpiralPartyConfig {
         this.chatPrefix = config.getString("party-chat-prefix", "@").charAt(0);
         this.sharedExperience = config.getString("shared-experience", "party");
         this.sharedInventory = config.getString("shared-inventory", "party");
+        this.inviteExpireTime = config.getLong("invite-expire-time", 600L);
     }
 
     public int getPartySize() {
@@ -43,6 +45,10 @@ public final class SpiralPartyConfig {
 
     public String getSharedInventory() {
         return this.sharedInventory;
+    }
+
+    public long getInviteExpireTime() {
+        return this.inviteExpireTime;
     }
 
 }
