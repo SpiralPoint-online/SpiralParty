@@ -1,9 +1,14 @@
 # SpiralParty
 SpiralParty is a plugin that allows players to form parties in order to share resources, like experience and inventory.
+
 Parties also have a party chat "channel" to communicate with each other, without other players knowing what they are saying.
+
 Parties only exist per server session and while all party members are online. If a player logs out, gets kicked, or goes offline for any reason, that player will leave the party.
+
 Parties are essentially disbanded when all but one player leaves the party.
+
 Creating a party is simple, just invite someone to party with you. Once they accept the invite a new party will be created.
+
 Parties can only be so big, this is configurable in the config.yml file. By default, the max-party-size is set to 3, but can be set as high as 9 and as low as 2.
 
 ## Features
