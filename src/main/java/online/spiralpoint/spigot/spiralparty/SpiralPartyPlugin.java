@@ -2,6 +2,7 @@ package online.spiralpoint.spigot.spiralparty;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+//TODO: Change all player.sendMessage method calls to use ChatColor.translateAlternateColorCode instead of ChatColor enums directly.
 public final class SpiralPartyPlugin extends JavaPlugin {
 
     @Override
