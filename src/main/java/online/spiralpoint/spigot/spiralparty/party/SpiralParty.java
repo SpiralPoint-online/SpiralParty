@@ -45,8 +45,11 @@ public class SpiralParty {
     }
 
     public void sendMessage(String msg) {
+        final String partyTag = "PARTY";
+        final String tagColor = "&3";
+        final String msgColor = "&f";
         for(Player member : this.partyMembers) {
-            member.sendMessage(ChatColor.AQUA.toString().concat("[Party] ").concat(msg));
+            member.sendMessage(ChatColor.translateAlternateColorCode('&', String.format("%s[%s] %s%s", tagColor, partyTag, msgColor, msg));
         }
     }
 
