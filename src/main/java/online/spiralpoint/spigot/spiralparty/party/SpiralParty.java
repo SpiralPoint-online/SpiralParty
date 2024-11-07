@@ -15,6 +15,7 @@ public class SpiralParty {
 
     SpiralParty() {
         this.partyMembers = new ArrayList<>();
+        Bukkit.getPluginManager().callEvent(new PartyCreatedEvent(this));
     }
 
     public boolean addMember(Player member) {
