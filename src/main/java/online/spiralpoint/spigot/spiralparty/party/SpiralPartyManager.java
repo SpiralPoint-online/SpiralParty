@@ -22,7 +22,7 @@ public class SpiralPartyManager extends BukkitRunnable {
         List<Player> inviteList = SpiralPartyManager.getInviteList(invited);
         inviteList.add(member);
         SpiralPartyManager.INVITE_MAP.put(invited, inviteList);
-        new SpiralPartyManager(invited, member).runTaskLater(SpiralPartyPlugin.getInstance(), SpiralPartyConfig.getInstance().getInviteExpireTime() * 20L);
+        new SpiralPartyManager(invited, member).runTaskLater(SpiralPartyPlugin.getPlugin(SpiralPartyPlugin.class), SpiralPartyConfig.get().getInviteExpireTime() * 20L);
         invited.sendMessage(ChatColor.DARK_PURPLE.toString().concat("You've been invited to join ").concat(member.getDisplayName()).concat("'s Party!"));
         member.sendMessage(ChatColor.DARK_PURPLE.toString().concat("You have invited ").concat(invited.getDisplayName()).concat(" to join a party!"));
     }

@@ -4,30 +4,43 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public final class SpiralPartyConfig {
 
-    public static final String DISABLED = "disabled";
-    public static final String SPLIT = "split";
-    public static final String EQUAL = "equal";
-    public static final String PARTY = "party";
+    public enum Mode {
+        DISABLED, SPLIT, EQUAL, PARTY;
+    }
 
     private static SpiralPartyConfig instance;
 
-    public static SpiralPartyConfig getInstance() {
+    /**
+     * This static method initializes a new SpiralPartyConfig Object if singleton field is null.
+     *
+     * @return singleton field of this class
+     */
+    public static SpiralPartyConfig get() {
         if(SpiralPartyConfig.instance == null) SpiralPartyConfig.instance = new SpiralPartyConfig();
         return SpiralPartyConfig.instance;
     }
 
+    /**
+     * This static method will set singleton field to null. (Useful for disable and restarting the plugin)
+     */
+    public static void nullify() {
+        if(SpiralPartyConfig.instance != null) SpiralPartyConfig.instance = null;
+    }
+
     private final int partySize;
-    private final char chatPrefix;
-    private final String sharedExperience;
-    private final String sharedInventory;
+    private final boolean partyChatEnabled;
+    private final char partyChatPrefix;
+    private final SpiralPartyConfig.Mode sharedExperience;
+    private final SpiralPartyConfig.Mode sharedInventory;
     private final long inviteExpireTime;
 
     private SpiralPartyConfig() {
-        FileConfiguration config = SpiralPartyPlugin.getInstance().getConfig();
+        FileConfiguration config = SpiralPartyPlugin.getPlugin(SpiralPartyPlugin.class).getConfig();
         this.partySize = Math.max(2, Math.min(9, config.getInt("max-party-size", 3)));
-        this.chatPrefix = config.getString("party-chat-prefix", "@").charAt(0);
-        this.sharedExperience = config.getString("shared-experience", "party");
-        this.sharedInventory = config.getString("shared-inventory", "party");
+        this.partyChatEnabled = config.getBoolean("party-chat.enabled", true);
+        this.partyChatPrefix = config.getString("party-chat.prefix", "@").charAt(0);
+        this.sharedExperience = SpiralPartyConfig.Mode.valueOf(config.getString("shared-experience", "party"));
+        this.sharedInventory = SpiralPartyConfig.Mode.valueOf(config.getString("shared-inventory", "party"));
         this.inviteExpireTime = config.getLong("invite-expire-time", 600L);
     }
 
@@ -35,15 +48,19 @@ public final class SpiralPartyConfig {
         return this.partySize;
     }
 
-    public char getChatPrefix() {
-        return this.chatPrefix;
+    public boolean isPartyChatEnabled() {
+        return this.partyChatEnabled;
     }
 
-    public String getSharedExperience() {
+    public char getPartyChatPrefix() {
+        return this.partyChatPrefix;
+    }
+
+    public SpiralPartyConfig.Mode getSharedExperienceMode() {
         return this.sharedExperience;
     }
 
-    public String getSharedInventory() {
+    public SpiralPartyConfig.Mode getSharedInventoryMode() {
         return this.sharedInventory;
     }
 
