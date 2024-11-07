@@ -8,7 +8,7 @@
 
 ## Features
 ### Shared Experience
-This feature has 3 modes of operation as well as ability to be turned off. These modes are:
+> This feature has 3 modes of operation as well as ability to be turned off. These modes are:
 - **split**
   > for any party member that collects experience, the total experience is divided equally and given to all players. e.g. if there are 3 members and member A collects 30 experience, each member receives 10 experience.
 - **equal**
@@ -19,7 +19,7 @@ This feature has 3 modes of operation as well as ability to be turned off. These
   > this isn't a mode but using this keyword in the config.yml file, completely disables the shared experience features.
 
 ### Shared Inventory
-This feature has 3 modes of operation as well as ability to be turned off. These modes are:
+> This feature has 3 modes of operation as well as ability to be turned off. These modes are:
 - **split**
   > for any party member that collects an ItemStack, the ItemStack's amount is split between each party member. e.g. if there are 3 members and member A collects 3 coal, each member gets 1 coal
 - **equal**
