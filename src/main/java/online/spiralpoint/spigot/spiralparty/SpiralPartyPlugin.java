@@ -7,6 +7,7 @@ public final class SpiralPartyPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+					this.saveDefaultConfig();
         SpiralPartyConfig.get(); // Initialize Config Class Singleton, do nothing with return value.
     }
 
