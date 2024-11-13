@@ -12,11 +12,38 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class PartyModeInventoryListener implements Listener {
-    private static final ConcurrentMap<SpiralParty, Inventory> PARTY_INVENTORY_MAP = new ConcurrentHashMap<>();
+    private static PartyModeInventoryListener INSTANCE;
+    
+    public static PartyModeInventoryListener getInstance() {
+        if(PartyModeInventoryListener.INSTANCE == null) PartyModeInventoryListener.INSTANCE = new PartyModeInventoryListener();
+        return PartyModeInventoryListener.INSTANCE;
+    }
+    
+    private final ConcurrentMap<SpiralParty, Inventory> partyInventoryMap;
+
+    private PartyModeInventoryListener() {
+        this.partyInventoryMap = new ConcurrentHashMap<>();
+    }
+
+    public ConcurrentMap<SpiralParty, Inventory> getPartyInventoryMap() {
+        return this.partyInventoryMap;
+    }
+
+    public Inventory getPartyInventory(@NotNull final SpiralParty party) {
+        return this.getPartyInventoryMap().get(party);
+    }
+    
+    public void addPartyInventory(@NotNull final SpiralParty party, @NotNull final Inventory inventory) {
+        this.getPartyInventoryMap().putIfAbsent(party, inventory);
+    }
+
+    public void removePartyInventory(@NotNull final SpiralParty party) {
+        this.getPartyInventoryMap().remove(party);
+    }
 
     @EventHandler
     public void onPartyCreated(PartyCreatedEvent event) {
-        //TODO: Create Inventory for party
+        this.addPartyInventory(event.getParty(), Bukkit.createInventory(null, 36, "Party Inventory"));
     }
 
     @EventHandler
@@ -26,6 +53,6 @@ public class PartyModeInventoryListener implements Listener {
 
     @EventHandler
     public void onPartyMemberRemoved(PartyMemberRemovedEvent event) {
-
+        //TODO: Pull Players Inventory from PDC DataStream and restore it.
     }
 }
