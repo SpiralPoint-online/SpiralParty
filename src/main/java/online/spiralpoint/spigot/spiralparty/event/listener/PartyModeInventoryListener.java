@@ -42,6 +42,15 @@ public class PartyModeInventoryListener implements Listener {
     }
 
     @EventHandler
+    public void onEntityPickupItem(EntityPickupItemEvent event) {
+        if(event.getEntity() instanceof Player player) {
+            if(!SpiralPartyManager.hasParty(player)) return;
+            event.setCancelled(true);
+            //TODO: Put into PartyInventory instead of player inventory.
+        }
+    }
+    
+    @EventHandler
     public void onPartyCreated(PartyCreatedEvent event) {
         this.addPartyInventory(event.getParty(), Bukkit.createInventory(null, 36, "Party Inventory"));
     }
