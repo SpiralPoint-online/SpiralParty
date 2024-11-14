@@ -1,6 +1,7 @@
 package online.spiralpoint.spigot.spiralparty.party;
 
 import online.spiralpoint.spigot.spiralparty.SpiralPartyConfig;
+import online.spiralpoint.spigot.spiralparty.event.PartyCreatedEvent;
 import online.spiralpoint.spigot.spiralparty.event.PartyMemberAddedEvent;
 import online.spiralpoint.spigot.spiralparty.event.PartyMemberRemovedEvent;
 import org.bukkit.Bukkit;
@@ -49,7 +50,7 @@ public class SpiralParty {
         final String tagColor = "&3";
         final String msgColor = "&f";
         for(Player member : this.partyMembers) {
-            member.sendMessage(ChatColor.translateAlternateColorCode('&', String.format("%s[%s] %s%s", tagColor, partyTag, msgColor, msg));
+            member.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("%s[%s] %s%s", tagColor, partyTag, msgColor, msg)));
         }
     }
 
