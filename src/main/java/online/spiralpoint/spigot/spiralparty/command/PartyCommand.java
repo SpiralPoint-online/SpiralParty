@@ -21,15 +21,17 @@ public final class PartyCommand implements TabExecutor {
             switch(command.getName().toLowerCase()) {
                 case "party":
                     if(args.length == 0) return false;
+                    String[] newArgs = String[args.length - 1];
+                    System.arraycopy(args, 2, newArgs, 1, newArgs.length);
                     switch(args[0].toLowerCase()) {
                         case "invite":
-                            String[] newArgs = String[args.length - 1];
-                            System.arraycopy(args, 2, newArgs, 1, newArgs.length);
                             this.invite(player, newArgs);
                             break;
                         case "join":
+                            this.join(player, newArgs);
                             break;
                         case "leave":
+                            this.leave(player, newArgs);
                             break;
                         default:
                             return false;
