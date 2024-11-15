@@ -3,3 +3,46 @@ version: ${project.version}
 description: ${project.description}
 main: online.spiralpoint.spigot.spiralparty.SpiralPartyPlugin
 api-version: '1.21'
+commands:
+  party:
+    description: main party command
+    permission: spiralparty.command.party
+    permission-message: You are not permitted to use this command
+    usage: /<command> (INVITE | JOIN | LEAVE)
+  partyinvite:
+    description: Send an invite to a player to join/create a party with you
+    aliases: [pinvite, invite]
+    permission: spiralparty.command.party.invite
+    permission-message: You are not permitted to use this command
+    usage: /<command> (player-name | LIST)
+  partyjoin:
+    description: Join the party of a player that has invited you
+    aliases: [pjoin, join]
+    permission: spiralparty.command.party.join
+    permission-message: You are not permitted to use this command
+    usage: /<command> (player-name)
+  partyleave:
+    description: Leaves a party you are in
+    aliases: [pleave, leave]
+    permission: spiralparty.command.party.leave
+    permission-message: You are not permitted to use this command
+    usage: /<command>
+permissions:
+  spiralparty.command.party:
+    description: Allows use of main party command
+    default: true
+  sprialparty.command.party.invite:
+    description: Allows use of party invite subcommand and partyinvite command
+    default: true
+    children:
+      spiralparty.command.party: true
+  sprialparty.command.party.join:
+    description: Allows use of party join subcommand and partyjoin command
+    default: true
+    children:
+      spiralparty.command.party: true
+  sprialparty.command.party.leave:
+    description: Allows use of party leave subcommand and partyleave command
+    default: true
+    children:
+      spiralparty.command.party: true
