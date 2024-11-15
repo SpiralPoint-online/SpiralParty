@@ -29,7 +29,7 @@ public final class PartyCommand implements TabExecutor {
                         case "join":
                             return this.onJoinCommand(player, newArgs);
                         case "leave":
-                            return this.onLeaveCommand(player, newArgs);
+                            return this.onLeaveCommand(player);
                         default:
                             return false;
                     }
@@ -39,7 +39,7 @@ public final class PartyCommand implements TabExecutor {
                 case "partyjoin":
                     return this.onJoinCommand(player, args);
                 case "partyleave":
-                    return this.onLeaveCommand(player, args);
+                    return this.onLeaveCommand(player);
                 default:
                     // Should never reach here!
                     return false;
@@ -61,28 +61,35 @@ public final class PartyCommand implements TabExecutor {
                         case "invite":
                             return this.onInviteComplete(newArgs);
                         case "join":
-                            return this.onJoinComplete(newArgs);
+                            return this.onJoinComplete(player, newArgs);
                     }
                     break;
                 case "partyinvite":
                     return this.onInviteComplete(args);
                 case "partyjoin":
-                    return this.onJoinComplete(args);
+                    return this.onJoinComplete(player, args);
             }
         }
         return List.of();
     }
 
     private boolean onInviteCommand(Player player, String[] args) {
-        //TODO: Add to target's invite list and inform them they've been invited
+        if(args.length == 0) return false;
+        Player target = Bukkit.getServer().getPlayer(args[0]);
+        SpiralPartyManager.sendInvite(target, player);
+        return true;
     }
 
     private boolean onJoinCommand(Player player, String[] args) {
-        //TODO: Allow player to join target's party
+        if(args.length == 0) return false;
+        Player target = Bukkit.getServer().getPlayer(args[0]);
+        SpiralPartyManager.joinParty(player, target);
+        return true;
     }
 
-    private boolean onLeaveCommand(Player player, String[] args) {
-        //TODO: Allow player to leave a party if their in one
+    private boolean onLeaveCommand(Player player) {
+        SpiralPartyManager.leaveParty(player);
+        return true;
     }
 
     private List<String> onInviteComplete(String[] args) {
@@ -95,8 +102,9 @@ public final class PartyCommand implements TabExecutor {
         return result;
     }
 
-    private List<String> onJoinComplete(String[] args) {
-        //TODO: Get list of players that have invited you and return it
+    private List<String> onJoinComplete(Player player, String[] args) {
+        if(args.length == 0) return SpiralPartyManager.getInviteList(player);
+        return List.of();
     }
 
 }
