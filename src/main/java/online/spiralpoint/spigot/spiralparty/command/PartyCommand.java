@@ -18,12 +18,12 @@ public final class PartyCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(sender instanceof Player player) {
-            switch(command.getName().toLowerCase()) {
+            switch(command.getName().toLowercase()) {
                 case "party":
                     if(args.length == 0) return false;
                     String[] newArgs = String[args.length - 1];
                     System.arraycopy(args, 2, newArgs, 1, newArgs.length);
-                    switch(args[0].toLowerCase()) {
+                    switch(args[0].toLowercase()) {
                         case "invite":
                             return this.onInviteCommand(player, newArgs);
                         case "join":
@@ -41,6 +41,7 @@ public final class PartyCommand implements TabExecutor {
                 case "partyleave":
                     return this.onLeaveCommand(player, args);
                 default:
+                    // Should never reach here!
                     return false;
             }
         }
@@ -58,39 +59,44 @@ public final class PartyCommand implements TabExecutor {
                     if(args.length == 0) return List.of("invite", "join", "leave");
                     switch(args[0].toLowercase()) {
                         case "invite":
-                            return this.onInviteComplete(player, newArgs);
+                            return this.onInviteComplete(newArgs);
                         case "join":
-                            return this.onJoinComplete(player, newArgs);
+                            return this.onJoinComplete(newArgs);
                     }
                     break;
                 case "partyinvite":
-                    return this.onInviteComplete(player, args);
+                    return this.onInviteComplete(args);
                 case "partyjoin":
-                    return this.onJoinComplete(player, args);
+                    return this.onJoinComplete(args);
             }
         }
         return List.of();
     }
 
     private boolean onInviteCommand(Player player, String[] args) {
+        //TODO: Add to target's invite list and inform them they've been invited
     }
 
     private boolean onJoinCommand(Player player, String[] args) {
+        //TODO: Allow player to join target's party
     }
 
     private boolean onLeaveCommand(Player player, String[] args) {
+        //TODO: Allow player to leave a party if their in one
     }
 
-    private List<String> onInviteComplete(Player player, String[] args) {
-        Player[] onlinePlayers = Bukkit.getOnlinePlayers().toArray(new Player[0]);
-        
+    private List<String> onInviteComplete(String[] args) {
+        List<String> result = new ArrayList<>();
+        if(args.length == 0) {
+            for(Player onlinePlayer : Bukkit.getOnlinePlayers().toArray(new Player[0])) {
+                result.add(onlinePlayer.getName());
+            }
+        }
+        return result;
     }
 
-    private List<String> onJoinComplete(Player player, String[] args) {
+    private List<String> onJoinComplete(String[] args) {
+        //TODO: Get list of players that have invited you and return it
     }
-
-    private List<String> onLeaveComplete(Player player, String[] args) {
-    }
-
 
 }
