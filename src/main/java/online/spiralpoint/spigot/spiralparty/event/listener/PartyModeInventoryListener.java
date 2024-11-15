@@ -8,10 +8,14 @@ import online.spiralpoint.spigot.spiralparty.party.SpiralParty;
 import online.spiralpoint.spigot.spiralparty.party.SpiralPartyManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -96,9 +100,7 @@ public class PartyModeInventoryListener implements Listener {
     private void setPartyInventory(@NotNull final SpiralParty party, @NotNull final Inventory partyInventory) {
         for(Player member : party.getPartyMembers()) {
             Inventory memberInventory = member.getInventory();
-            for(int i = 0; i < partyInventory.getSize(); i++) {
-                memberInventory.setItem(i, partyInventory.getItem(i));
-            }
+            memberInventory.setStorageContents(partyInventory.getStorageContents());
         }
     }
 
@@ -114,6 +116,28 @@ public class PartyModeInventoryListener implements Listener {
             this.setPartyInventory(party, partyInventory);
             event.getItem().remove();
         }
+    }
+
+    @EventHandler
+    public void onPlayerDropItem(PlayerDropItemEvent event) {
+        Player player = event.getPlayer();
+        Item itemDrop = event.getItemDrop();
+        ItemStack itemStack = itemDrop.getItemStack();
+        if(!SpiralPartyManager.hasParty(player)) return;
+        SpiralParty party = SpiralPartyManager.getParty(player);
+        Inventory partyInventory = this.getPartyInventory(party);
+        partyInventory.setContents(player.getInventory().getStorageContents());
+        this.setPartyInventory(party, partyInventory);
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+
+    }
+
+    @EventHandler
+    public void onInventoryDrag(InventoryDragEvent event) {
+
     }
 
     //TODO: Add more events to account for dropping items, moving items, etc...
