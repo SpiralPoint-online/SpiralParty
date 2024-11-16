@@ -1,9 +1,14 @@
 package online.spiralpoint.spigot.spiralparty.command;
 
+import online.spiralpoint.spigot.spiralparty.party.SpiralParty;
+import online.spiralpoint.spigot.spiralparty.party.SpiralPartyManager;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class PartyCommand implements TabExecutor {
@@ -18,28 +23,31 @@ public final class PartyCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(sender instanceof Player player) {
-            switch(command.getName().toLowercase()) {
+            switch(command.getName().toLowerCase()) {
                 case "party":
                     if(args.length == 0) return false;
-                    String[] newArgs = String[args.length - 1];
+                    String[] newArgs = new String[args.length - 1];
                     System.arraycopy(args, 2, newArgs, 1, newArgs.length);
-                    switch(args[0].toLowercase()) {
+                    switch(args[0].toLowerCase()) {
                         case "invite":
                             return this.onInviteCommand(player, newArgs);
                         case "join":
                             return this.onJoinCommand(player, newArgs);
                         case "leave":
                             return this.onLeaveCommand(player);
+                        case "list":
+                            return this.onListCommand(player, newArgs);
                         default:
                             return false;
                     }
-                    break;
                 case "partyinvite":
                     return this.onInviteCommand(player, args);
                 case "partyjoin":
                     return this.onJoinCommand(player, args);
                 case "partyleave":
                     return this.onLeaveCommand(player);
+                case "partylist":
+                    return this.onListCommand(player, args);
                 default:
                     // Should never reach here!
                     return false;
@@ -52,22 +60,26 @@ public final class PartyCommand implements TabExecutor {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         if(sender instanceof Player player) {
-            String[] newArgs = String[args.length - 1];
-            System.arraycopy(args, 2, newArgs, 1, newArgs.length);
-            switch(command.getName().toLowercase()) {
+            switch(command.getName().toLowerCase()) {
                 case "party":
-                    if(args.length == 0) return List.of("invite", "join", "leave");
-                    switch(args[0].toLowercase()) {
+                    if(args.length == 0) return List.of("invite", "join", "leave", "list");
+                    String[] newArgs = new String[args.length - 1];
+                    System.arraycopy(args, 2, newArgs, 1, newArgs.length);
+                    switch(args[0].toLowerCase()) {
                         case "invite":
                             return this.onInviteComplete(newArgs);
                         case "join":
                             return this.onJoinComplete(player, newArgs);
+                        case "list":
+                            return this.onListComplete(newArgs);
                     }
                     break;
                 case "partyinvite":
                     return this.onInviteComplete(args);
                 case "partyjoin":
                     return this.onJoinComplete(player, args);
+                case "partylist":
+                    return this.onListComplete(args);
             }
         }
         return List.of();
@@ -92,6 +104,36 @@ public final class PartyCommand implements TabExecutor {
         return true;
     }
 
+    private boolean onListCommand(Player player, String[] args) {
+        if(args.length == 0) return false;
+        switch(args[0].toLowerCase()) {
+            case "members":
+                player.sendMessage("Party Members are:");
+                if(!SpiralPartyManager.hasParty(player)) {
+                    player.sendMessage("You are not in a party!");
+                    break;
+                }
+                SpiralParty party = SpiralPartyManager.getParty(player);
+                for(Player member : party.getPartyMembers()) {
+                    if(member.equals(player)) continue;
+                    if(!member.getDisplayName().equals(member.getName())) player.sendMessage(String.format("%s (%s)", member.getDisplayName(), member.getName())); else player.sendMessage(member.getName());
+                }
+                break;
+            case "invites":
+                player.sendMessage("You've been invited by:");
+                List<Player> invitedBy = SpiralPartyManager.getInviteList(player);
+                if(invitedBy.isEmpty()) player.sendMessage("You have no invites!");
+                for(Player member : invitedBy) {
+                    if(member.equals(player)) continue;
+                    if(!member.getDisplayName().equals(member.getName())) player.sendMessage(String.format("%s (%s)", member.getDisplayName(), member.getName())); else player.sendMessage(member.getName());
+                }
+                break;
+            default:
+                return false;
+        }
+        return true;
+    }
+
     private List<String> onInviteComplete(String[] args) {
         List<String> result = new ArrayList<>();
         if(args.length == 0) {
@@ -103,7 +145,17 @@ public final class PartyCommand implements TabExecutor {
     }
 
     private List<String> onJoinComplete(Player player, String[] args) {
-        if(args.length == 0) return SpiralPartyManager.getInviteList(player);
+        List<String> result = new ArrayList<>();
+        if(args.length == 0) {
+            for(Player playerInvited : SpiralPartyManager.getInviteList(player)) {
+                result.add(playerInvited.getName());
+            }
+        }
+        return result;
+    }
+
+    private List<String> onListComplete(String[] args) {
+        if(args.length == 0) return List.of("members", "invites");
         return List.of();
     }
 
