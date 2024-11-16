@@ -12,10 +12,20 @@ import java.util.List;
 import java.util.Set;
 
 public final class PartyChatListener implements Listener {
+
+    private static PartyChatListener INSTANCE;
+
+    public static PartyChatListener getInstance() {
+        if(PartyChatListener.INSTANCE == null) PartyChatListener.INSTANCE = new PartyChatListener();
+        return PartyChatListener.INSTANCE;
+    }
+
+    private PartyChatListener() {}
+
     @EventHandler
     public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
-        if(event.getMessage().charAt(0) != SpiralPartyConfig.get().getPartyChatPrefix()) return;
-        if(!SpiralPartyConfig.get().isPartyChatEnabled()) return;
+        if(event.getMessage().charAt(0) != SpiralPartyConfig.getInstance().getPartyChatPrefix()) return;
+        if(!SpiralPartyConfig.getInstance().isPartyChatEnabled()) return;
         Player sender = event.getPlayer();
         if(SpiralPartyManager.hasParty(sender)) {
             Set<Player> recipients = event.getRecipients();

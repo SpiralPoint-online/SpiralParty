@@ -3,6 +3,7 @@ version: ${project.version}
 description: ${project.description}
 main: online.spiralpoint.spigot.spiralparty.SpiralPartyPlugin
 api-version: '1.21'
+softdepend: [SpiralChat]
 commands:
   party:
     description: main party command
@@ -47,8 +48,17 @@ permissions:
     default: true
     children:
       spiralparty.command.party: true
+      spiralparty.party.join: true
   sprialparty.command.party.leave:
     description: Allows use of party leave subcommand and partyleave command
     default: true
     children:
       spiralparty.command.party: true
+  spiralparty.party.join:
+    description: Allows joining of parties
+    default: true
+  spiralparty.party.chat:
+    description: Allows use of party chat features
+    default: true
+    children:
+      spiralparty.party.join: true

@@ -42,7 +42,7 @@ public class SpiralParty {
     }
 
     public boolean isPartyFull() {
-        return this.partyMembers.size() >= SpiralPartyConfig.get().getPartySize();
+        return this.partyMembers.size() >= SpiralPartyConfig.getInstance().getPartySize();
     }
 
     public void sendMessage(String msg) {

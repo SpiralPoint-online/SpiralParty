@@ -8,23 +8,23 @@ public final class SpiralPartyConfig {
         DISABLED, SPLIT, EQUAL, PARTY;
     }
 
-    private static SpiralPartyConfig instance;
+    private static SpiralPartyConfig INSTANCE;
 
     /**
      * This static method initializes a new SpiralPartyConfig Object if singleton field is null.
      *
      * @return singleton field of this class
      */
-    public static SpiralPartyConfig get() {
-        if(SpiralPartyConfig.instance == null) SpiralPartyConfig.instance = new SpiralPartyConfig();
-        return SpiralPartyConfig.instance;
+    public static SpiralPartyConfig getInstance() {
+        if(SpiralPartyConfig.INSTANCE == null) SpiralPartyConfig.INSTANCE = new SpiralPartyConfig();
+        return SpiralPartyConfig.INSTANCE;
     }
 
     /**
      * This static method will set singleton field to null. (Useful for disable and restarting the plugin)
      */
-    public static void nullify() {
-        if(SpiralPartyConfig.instance != null) SpiralPartyConfig.instance = null;
+    public static void nullifyInstance() {
+        if(SpiralPartyConfig.INSTANCE != null) SpiralPartyConfig.INSTANCE = null;
     }
 
     private final int partySize;

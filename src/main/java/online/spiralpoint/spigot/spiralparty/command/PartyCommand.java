@@ -19,7 +19,9 @@ public final class PartyCommand implements TabExecutor {
         if(PartyCommand.INSTANCE == null) PartyCommand.INSTANCE = new PartyCommand();
         return PartyCommand.INSTANCE;
     }
-    
+
+    private PartyCommand() {}
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(sender instanceof Player player) {
