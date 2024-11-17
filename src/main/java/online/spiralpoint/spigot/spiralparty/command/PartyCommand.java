@@ -3,6 +3,7 @@ package online.spiralpoint.spigot.spiralparty.command;
 import online.spiralpoint.spigot.spiralparty.party.SpiralParty;
 import online.spiralpoint.spigot.spiralparty.party.SpiralPartyManager;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -29,7 +30,7 @@ public final class PartyCommand implements TabExecutor {
                 case "party":
                     if(args.length == 0) return false;
                     String[] newArgs = new String[args.length - 1];
-                    System.arraycopy(args, 2, newArgs, 1, newArgs.length);
+                    System.arraycopy(args, 1, newArgs, 0, newArgs.length);
                     switch(args[0].toLowerCase()) {
                         case "invite":
                             return this.onInviteCommand(player, newArgs);
@@ -64,9 +65,9 @@ public final class PartyCommand implements TabExecutor {
         if(sender instanceof Player player) {
             switch(command.getName().toLowerCase()) {
                 case "party":
-                    if(args.length == 0) return List.of("invite", "join", "leave", "list");
+                    if(args.length <= 1) return List.of("invite", "join", "leave", "list");
                     String[] newArgs = new String[args.length - 1];
-                    System.arraycopy(args, 2, newArgs, 1, newArgs.length);
+                    System.arraycopy(args, 1, newArgs, 0, newArgs.length);
                     switch(args[0].toLowerCase()) {
                         case "invite":
                             return this.onInviteComplete(newArgs);
@@ -90,14 +91,14 @@ public final class PartyCommand implements TabExecutor {
     private boolean onInviteCommand(Player player, String[] args) {
         if(args.length == 0) return false;
         Player target = Bukkit.getServer().getPlayer(args[0]);
-        SpiralPartyManager.sendInvite(target, player);
+        if(!SpiralPartyManager.sendInvite(target, player)) player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4&lInvitation not sent!"));
         return true;
     }
 
     private boolean onJoinCommand(Player player, String[] args) {
         if(args.length == 0) return false;
         Player target = Bukkit.getServer().getPlayer(args[0]);
-        SpiralPartyManager.joinParty(player, target);
+        if(!SpiralPartyManager.joinParty(player, target)) player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4&lParty not joined!"));
         return true;
     }
 
@@ -117,7 +118,6 @@ public final class PartyCommand implements TabExecutor {
                 }
                 SpiralParty party = SpiralPartyManager.getParty(player);
                 for(Player member : party.getPartyMembers()) {
-                    if(member.equals(player)) continue;
                     if(!member.getDisplayName().equals(member.getName())) player.sendMessage(String.format("%s (%s)", member.getDisplayName(), member.getName())); else player.sendMessage(member.getName());
                 }
                 break;
@@ -126,7 +126,6 @@ public final class PartyCommand implements TabExecutor {
                 List<Player> invitedBy = SpiralPartyManager.getInviteList(player);
                 if(invitedBy.isEmpty()) player.sendMessage("You have no invites!");
                 for(Player member : invitedBy) {
-                    if(member.equals(player)) continue;
                     if(!member.getDisplayName().equals(member.getName())) player.sendMessage(String.format("%s (%s)", member.getDisplayName(), member.getName())); else player.sendMessage(member.getName());
                 }
                 break;
@@ -138,7 +137,7 @@ public final class PartyCommand implements TabExecutor {
 
     private List<String> onInviteComplete(String[] args) {
         List<String> result = new ArrayList<>();
-        if(args.length == 0) {
+        if(args.length <= 1) {
             for(Player onlinePlayer : Bukkit.getOnlinePlayers().toArray(new Player[0])) {
                 result.add(onlinePlayer.getName());
             }
@@ -148,7 +147,7 @@ public final class PartyCommand implements TabExecutor {
 
     private List<String> onJoinComplete(Player player, String[] args) {
         List<String> result = new ArrayList<>();
-        if(args.length == 0) {
+        if(args.length <= 1) {
             for(Player playerInvited : SpiralPartyManager.getInviteList(player)) {
                 result.add(playerInvited.getName());
             }
@@ -157,7 +156,7 @@ public final class PartyCommand implements TabExecutor {
     }
 
     private List<String> onListComplete(String[] args) {
-        if(args.length == 0) return List.of("members", "invites");
+        if(args.length <= 1) return List.of("members", "invites");
         return List.of();
     }
 

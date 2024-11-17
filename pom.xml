@@ -6,7 +6,7 @@
 
     <groupId>online.spiralpoint.spigot</groupId>
     <artifactId>spiralparty</artifactId>
-    <version>0.1.1</version>
+    <version>0.1-INDEV</version>
     <packaging>jar</packaging>
 
     <name>SpiralParty</name>
@@ -19,7 +19,7 @@
 
     <build>
         <defaultGoal>clean package install</defaultGoal>
-        <finalName>${project.name}</finalName>
+        <finalName>${project.name}-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

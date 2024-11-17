@@ -39,8 +39,8 @@ public final class SpiralPartyConfig {
         this.partySize = Math.max(2, Math.min(9, config.getInt("max-party-size", 3)));
         this.partyChatEnabled = config.getBoolean("party-chat.enabled", true);
         this.partyChatPrefix = config.getString("party-chat.prefix", "@").charAt(0);
-        this.sharedExperience = SpiralPartyConfig.Mode.valueOf(config.getString("shared-experience", "party"));
-        this.sharedInventory = SpiralPartyConfig.Mode.valueOf(config.getString("shared-inventory", "party"));
+        this.sharedExperience = SpiralPartyConfig.Mode.valueOf(config.getString("shared-experience", "party").toUpperCase());
+        this.sharedInventory = SpiralPartyConfig.Mode.valueOf(config.getString("shared-inventory", "party").toUpperCase());
         this.inviteExpireTime = config.getLong("invite-expire-time", 600L);
     }
 

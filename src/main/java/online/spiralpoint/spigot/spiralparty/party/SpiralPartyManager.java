@@ -15,16 +15,18 @@ public class SpiralPartyManager extends BukkitRunnable {
     private static final ConcurrentMap<Player, SpiralParty> PARTY_MAP = new ConcurrentHashMap<>();
     private static final ConcurrentMap<Player, List<Player>> INVITE_MAP = new ConcurrentHashMap<>();
 
-    public static void sendInvite(Player invited, Player member) {
-        if(invited == null || member == null) return;
-        if(SpiralPartyManager.hasParty(member) && SpiralPartyManager.getParty(member).isPartyFull()) return;
-        if(SpiralPartyManager.hasBeenInvitedBy(invited, member)) return;
+    public static boolean sendInvite(Player invited, Player member) {
+        if(invited == null || member == null) return false;
+        if(invited.equals(member)) return false;
+        if(SpiralPartyManager.hasParty(member) && SpiralPartyManager.getParty(member).isPartyFull()) return false;
+        if(SpiralPartyManager.hasBeenInvitedBy(invited, member)) return false;
         List<Player> inviteList = SpiralPartyManager.getInviteList(invited);
         inviteList.add(member);
         SpiralPartyManager.INVITE_MAP.put(invited, inviteList);
         new SpiralPartyManager(invited, member).runTaskLater(SpiralPartyPlugin.getPlugin(SpiralPartyPlugin.class), SpiralPartyConfig.getInstance().getInviteExpireTime() * 20L);
         invited.sendMessage(ChatColor.DARK_PURPLE.toString().concat("You've been invited to join ").concat(member.getDisplayName()).concat("'s Party!"));
         member.sendMessage(ChatColor.DARK_PURPLE.toString().concat("You have invited ").concat(invited.getDisplayName()).concat(" to join a party!"));
+        return true;
     }
 
     public static void removeInvite(Player invited, Player member) {
@@ -55,14 +57,15 @@ public class SpiralPartyManager extends BukkitRunnable {
         return inviteList.contains(member);
     }
 
-    public static void joinParty(Player invited, Player member) {
-        if(invited == null || member == null) return;
-        if(!SpiralPartyManager.hasBeenInvitedBy(invited, member)) return;
+    public static boolean joinParty(Player invited, Player member) {
+        if(invited == null || member == null) return false;
+        if(invited.equals(member)) return false;
+        if(!SpiralPartyManager.hasBeenInvitedBy(invited, member)) return false;
         if(SpiralPartyManager.hasParty(invited)) {
             invited.sendMessage(ChatColor.DARK_RED.toString().concat("YOU ARE ALREADY A MEMBER OF A PARTY"));
         } else if(SpiralPartyManager.hasParty(member)) {
             SpiralParty party = SpiralPartyManager.getParty(member);
-            if(party.isPartyFull()) return;
+            if(party.isPartyFull()) return false;
             if(party.addMember(invited)) SpiralPartyManager.PARTY_MAP.putIfAbsent(invited, party);
             for(Player player : party.getPartyMembers()) {
                 SpiralPartyManager.removeInvite(invited, player);
@@ -76,6 +79,7 @@ public class SpiralPartyManager extends BukkitRunnable {
             party.sendMessage(member.getDisplayName().concat(" joined the party!"));
             party.sendMessage(invited.getDisplayName().concat(" joined the party!"));
         }
+        return true;
     }
 
     public static void leaveParty(Player member) {

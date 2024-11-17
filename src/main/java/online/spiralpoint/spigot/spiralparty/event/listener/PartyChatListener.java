@@ -39,7 +39,7 @@ public final class PartyChatListener implements Listener {
             event.setMessage(event.getMessage().substring(1));
         } else {
             event.setCancelled(true);
-            sender.sendMessage(ChatColor.DARK_RED.toString().concat("YOU ARE NOT PART OF A PARTY!"));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&4&lYOU ARE NOT PART OF A PARTY!"));
         }
     }
 }
