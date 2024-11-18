@@ -12,6 +12,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -131,13 +132,18 @@ public class PartyModeInventoryListener implements Listener {
     }
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
+    public void onBlockPlace(BlockPlaceEvent event) {
+        SpiralPartyPlugin.getPlugin(SpiralPartyPlugin.class).getLogger().info(event.toString());
+    }
 
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        SpiralPartyPlugin.getPlugin(SpiralPartyPlugin.class).getLogger().info(event.toString());
     }
 
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
-
+        SpiralPartyPlugin.getPlugin(SpiralPartyPlugin.class).getLogger().info(event.toString());
     }
 
     //TODO: Add more events to account for dropping items, moving items, etc...

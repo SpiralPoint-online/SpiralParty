@@ -9,7 +9,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.List;
-import java.util.Set;
 
 public final class PartyChatListener implements Listener {
 
@@ -28,13 +27,9 @@ public final class PartyChatListener implements Listener {
         if(!SpiralPartyConfig.getInstance().isPartyChatEnabled()) return;
         Player sender = event.getPlayer();
         if(SpiralPartyManager.hasParty(sender)) {
-            Set<Player> recipients = event.getRecipients();
             List<Player> partyMembers = SpiralPartyManager.getParty(sender).getPartyMembers();
-            partyMembers.remove(sender);
-
-            recipients.clear();
-            recipients.addAll(partyMembers);
-
+            event.getRecipients().clear();
+            event.getRecipients().addAll(partyMembers);
             event.setFormat(ChatColor.translateAlternateColorCodes('&', "&3&l[PARTY] &3%s: &b%s"));
             event.setMessage(event.getMessage().substring(1));
         } else {

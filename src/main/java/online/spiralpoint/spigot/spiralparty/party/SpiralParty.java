@@ -37,6 +37,10 @@ public class SpiralParty {
         return this.partyMembers;
     }
 
+    public boolean hasMember(Player member) {
+        return this.getPartyMembers().contains(member);
+    }
+
     public int getPartySize() {
         return this.partyMembers.size();
     }
