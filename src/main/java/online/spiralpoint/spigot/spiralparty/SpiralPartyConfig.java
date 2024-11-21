@@ -30,6 +30,9 @@ public final class SpiralPartyConfig {
     private final int partySize;
     private final boolean partyChatEnabled;
     private final char partyChatPrefix;
+    private final boolean partyTeleportEnabled;
+    private final int partyTeleportCooldown;
+    private final int partyTeleportDelay;
     private final SpiralPartyConfig.Mode sharedExperience;
     private final SpiralPartyConfig.Mode sharedInventory;
     private final long inviteExpireTime;
@@ -39,6 +42,9 @@ public final class SpiralPartyConfig {
         this.partySize = Math.max(2, Math.min(9, config.getInt("max-party-size", 3)));
         this.partyChatEnabled = config.getBoolean("party-chat.enabled", true);
         this.partyChatPrefix = config.getString("party-chat.prefix", "@").charAt(0);
+        this.partyTeleportEnabled = config.getBoolean("teleport.enabled", true);
+        this.partyTeleportCooldown = config.getInt("teleport.cooldown", 60);
+        this.partyTeleportDelay = config.getInt("teleport.delay", 5);
         this.sharedExperience = SpiralPartyConfig.Mode.valueOf(config.getString("shared-experience", "party").toUpperCase());
         this.sharedInventory = SpiralPartyConfig.Mode.valueOf(config.getString("shared-inventory", "party").toUpperCase());
         this.inviteExpireTime = config.getLong("invite-expire-time", 600L);
@@ -54,6 +60,18 @@ public final class SpiralPartyConfig {
 
     public char getPartyChatPrefix() {
         return this.partyChatPrefix;
+    }
+
+    public boolean isPartyTeleportEnabled() {
+        return this.partyTeleportEnabled;
+    }
+
+    public int getPartyTeleportCooldown() {
+        return this.partyTeleportCooldown;
+    }
+
+    public int getPartyTeleportDelay() {
+        return this.partyTeleportDelay;
     }
 
     public SpiralPartyConfig.Mode getSharedExperienceMode() {

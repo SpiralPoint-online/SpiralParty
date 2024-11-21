@@ -2,6 +2,10 @@ max-party-size: 3 # maximum amount of players in a single party (valid values ar
 party-chat:
   enabled: true # if party chat is enabled
   prefix: ! # prefix character for chat messages
+teleport:
+  enabled: true # if party teleportation is enabled
+  cooldown: 60 # cooldown, in seconds, between teleport uses
+  delay: 5 # delay, in seconds, before actually teleporting
 shared-experience: party # how to share experience (valid values are: [disabled, split, equal, party])
 shared-inventory: party # how to share inventory (valid values are: [disabled, split, equal, party])
-invite-expire-time: 600 # time until an invite expires (this value is in seconds and is based on 20 ticks/second)
+invite-expire-time: 600 # time until an invitation expires (this value is in seconds and is based on 20 ticks/second)

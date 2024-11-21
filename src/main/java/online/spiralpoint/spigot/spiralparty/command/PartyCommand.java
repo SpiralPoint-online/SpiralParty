@@ -2,6 +2,7 @@ package online.spiralpoint.spigot.spiralparty.command;
 
 import online.spiralpoint.spigot.spiralparty.party.SpiralParty;
 import online.spiralpoint.spigot.spiralparty.party.SpiralPartyManager;
+import online.spiralpoint.spigot.spiralparty.party.invite.SpiralInviteManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -38,6 +39,8 @@ public final class PartyCommand implements TabExecutor {
                             return this.onJoinCommand(player, newArgs);
                         case "leave":
                             return this.onLeaveCommand(player);
+                        case "teleport":
+                            return this.onTeleportCommand(player, newArgs);
                         case "list":
                             return this.onListCommand(player, newArgs);
                         default:
@@ -49,6 +52,8 @@ public final class PartyCommand implements TabExecutor {
                     return this.onJoinCommand(player, args);
                 case "partyleave":
                     return this.onLeaveCommand(player);
+                case "partyteleport":
+                    return this.onTeleportCommand(player, args);
                 case "partylist":
                     return this.onListCommand(player, args);
                 default:
@@ -60,38 +65,10 @@ public final class PartyCommand implements TabExecutor {
         return true;
     }
 
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        if(sender instanceof Player player) {
-            switch(command.getName().toLowerCase()) {
-                case "party":
-                    if(args.length <= 1) return List.of("invite", "join", "leave", "list");
-                    String[] newArgs = new String[args.length - 1];
-                    System.arraycopy(args, 1, newArgs, 0, newArgs.length);
-                    switch(args[0].toLowerCase()) {
-                        case "invite":
-                            return this.onInviteComplete(newArgs);
-                        case "join":
-                            return this.onJoinComplete(player, newArgs);
-                        case "list":
-                            return this.onListComplete(newArgs);
-                    }
-                    break;
-                case "partyinvite":
-                    return this.onInviteComplete(args);
-                case "partyjoin":
-                    return this.onJoinComplete(player, args);
-                case "partylist":
-                    return this.onListComplete(args);
-            }
-        }
-        return List.of();
-    }
-
     private boolean onInviteCommand(Player player, String[] args) {
         if(args.length == 0) return false;
         Player target = Bukkit.getServer().getPlayer(args[0]);
-        if(!SpiralPartyManager.sendInvite(target, player)) player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4&lInvitation not sent!"));
+        if(!SpiralInviteManager.sendInvite(target, player)) player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4&lInvitation not sent!"));
         return true;
     }
 
@@ -104,6 +81,11 @@ public final class PartyCommand implements TabExecutor {
 
     private boolean onLeaveCommand(Player player) {
         SpiralPartyManager.leaveParty(player);
+        return true;
+    }
+
+    private boolean onTeleportCommand(Player player, String[] args) {
+
         return true;
     }
 
@@ -123,7 +105,7 @@ public final class PartyCommand implements TabExecutor {
                 break;
             case "invites":
                 player.sendMessage("You've been invited by:");
-                List<Player> invitedBy = SpiralPartyManager.getInviteList(player);
+                List<Player> invitedBy = SpiralInviteManager.getInviteList(player);
                 if(invitedBy.isEmpty()) player.sendMessage("You have no invites!");
                 for(Player member : invitedBy) {
                     if(!member.getDisplayName().equals(member.getName())) player.sendMessage(String.format("%s (%s)", member.getDisplayName(), member.getName())); else player.sendMessage(member.getName());
@@ -133,6 +115,38 @@ public final class PartyCommand implements TabExecutor {
                 return false;
         }
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        if(sender instanceof Player player) {
+            switch(command.getName().toLowerCase()) {
+                case "party":
+                    if(args.length <= 1) return List.of("invite", "join", "leave", "teleport", "list");
+                    String[] newArgs = new String[args.length - 1];
+                    System.arraycopy(args, 1, newArgs, 0, newArgs.length);
+                    switch(args[0].toLowerCase()) {
+                        case "invite":
+                            return this.onInviteComplete(newArgs);
+                        case "join":
+                            return this.onJoinComplete(player, newArgs);
+                        case "teleport":
+                            return this.onTeleportComplete(player, newArgs);
+                        case "list":
+                            return this.onListComplete(newArgs);
+                    }
+                    break;
+                case "partyinvite":
+                    return this.onInviteComplete(args);
+                case "partyjoin":
+                    return this.onJoinComplete(player, args);
+                case "partyteleport":
+                    return this.onTeleportComplete(player, args);
+                case "partylist":
+                    return this.onListComplete(args);
+            }
+        }
+        return List.of();
     }
 
     private List<String> onInviteComplete(String[] args) {
@@ -148,11 +162,22 @@ public final class PartyCommand implements TabExecutor {
     private List<String> onJoinComplete(Player player, String[] args) {
         List<String> result = new ArrayList<>();
         if(args.length <= 1) {
-            for(Player playerInvited : SpiralPartyManager.getInviteList(player)) {
+            for(Player playerInvited : SpiralInviteManager.getInviteList(player)) {
                 result.add(playerInvited.getName());
             }
         }
         return result;
+    }
+
+    private List<String> onTeleportComplete(Player player, String[] args) {
+        List<String> result = new ArrayList<>();
+        if(args.length <= 1 && SpiralPartyManager.hasParty(player)) {
+            for(Player member : SpiralPartyManager.getParty(player).getPartyMembers()) {
+                if(member.equals(player)) continue;
+                result.add(member.getName());
+            }
+        }
+        return List.of();
     }
 
     private List<String> onListComplete(String[] args) {

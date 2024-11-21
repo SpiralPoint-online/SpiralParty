@@ -9,7 +9,7 @@ commands:
     description: main party command
     permission: spiralparty.command.party
     permission-message: You are not permitted to use this command
-    usage: /<command> (INVITE | JOIN | LEAVE | LIST)
+    usage: /<command> (INVITE | JOIN | LEAVE | LIST) [(player-name) | (MEMBERS | INVITES)]
   partyinvite:
     description: Send an invite to a player to join/create a party with you
     aliases: [pinvite, invite]
@@ -28,12 +28,18 @@ commands:
     permission: spiralparty.command.party.leave
     permission-message: You are not permitted to use this command
     usage: /<command>
+  partyteleport:
+    description: Teleport to another player in party.
+    aliases: [pteleport, pt, teleport, tp]
+    permission: spiralparty.command.party.teleport
+    permission-message: You are not permitted to use this command
+    usage: /<command> (player-name)
   partylist:
     description: List party members and invites
     aliases: [plist, list]
     permission: spiralparty.command.party.list
     permission-message: You are not permitted to use this command
-    usage: /<command> [MEMBERS | INVITES]
+    usage: /<command> (MEMBERS | INVITES)
 permissions:
   spiralparty.command.party:
     description: Allows use of main party command
@@ -51,6 +57,11 @@ permissions:
       spiralparty.party.join: true
   sprialparty.command.party.leave:
     description: Allows use of party leave subcommand and partyleave command
+    default: true
+    children:
+      spiralparty.command.party: true
+  spiralparty.command.party.teleport:
+    description: Allows use of party teleport subcommand and partyteleport command
     default: true
     children:
       spiralparty.command.party: true
